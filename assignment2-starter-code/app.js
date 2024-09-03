@@ -1,44 +1,52 @@
-// app.js
-angular.module('ShoppingListCheckOff', [])
+(function() {
+    'use strict';
 
-// Define the service to share data between controllers
-.service('ShoppingListCheckOffService', function() {
-    var service = this;
+    // Define the AngularJS module
+    angular.module('ShoppingListCheckOff', [])
 
-    // Initial data
-    var toBuyItems = [
-        { name: 'Cookies', quantity: 10 },
-        { name: 'Chocolates', quantity: 5 }
-    ];
-    var boughtItems = [];
+    // Define the service to share data between controllers
+    .service('ShoppingListCheckOffService', function() {
+        var service = this;
 
-    // Expose the data and methods to the controllers
-    service.getToBuyItems = function() {
-        return toBuyItems;
-    };
+        // Initial data
+        var toBuyItems = [
+            { name: 'Cookies', quantity: 10 },
+            { name: 'Chocolates', quantity: 5 },
+            { name: 'Milk', quantity: 2 },
+            { name: 'Bread', quantity: 1 },
+            { name: 'Eggs', quantity: 12 }
+        ];
+        var boughtItems = [];
 
-    service.getBoughtItems = function() {
-        return boughtItems;
-    };
+        // Expose the data and methods to the controllers
+        service.getToBuyItems = function() {
+            return toBuyItems;
+        };
 
-    service.buyItem = function(index) {
-        var item = toBuyItems.splice(index, 1)[0];
-        boughtItems.push(item);
-    };
-})
+        service.getBoughtItems = function() {
+            return boughtItems;
+        };
 
-// Define the ToBuyController
-.controller('ToBuyController', ['ShoppingListCheckOffService', function(ShoppingListCheckOffService) {
-    var vm = this;
-    vm.items = ShoppingListCheckOffService.getToBuyItems();
+        service.buyItem = function(index) {
+            var item = toBuyItems.splice(index, 1)[0];
+            boughtItems.push(item);
+        };
+    })
 
-    vm.buyItem = function(index) {
-        ShoppingListCheckOffService.buyItem(index);
-    };
-}])
+    // Define the ToBuyController
+    .controller('ToBuyController', ['ShoppingListCheckOffService', function(ShoppingListCheckOffService) {
+        var vm = this;
+        vm.items = ShoppingListCheckOffService.getToBuyItems();
 
-// Define the AlreadyBoughtController
-.controller('AlreadyBoughtController', ['ShoppingListCheckOffService', function(ShoppingListCheckOffService) {
-    var vm = this;
-    vm.items = ShoppingListCheckOffService.getBoughtItems();
-}]);
+        vm.buyItem = function(index) {
+            ShoppingListCheckOffService.buyItem(index);
+        };
+    }])
+
+    // Define the AlreadyBoughtController
+    .controller('AlreadyBoughtController', ['ShoppingListCheckOffService', function(ShoppingListCheckOffService) {
+        var vm = this;
+        vm.items = ShoppingListCheckOffService.getBoughtItems();
+    }]);
+
+})();
